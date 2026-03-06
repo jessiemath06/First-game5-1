@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Jessie Math - 小數的除法PRO </title>
+
+    <meta name="description" content="© 2025–2026 Jessie Math 捷析老師. All rights reserved.">
+    
+    <meta property="og:title" content="Jessie Math - 小數的除法PRO">
+    <meta property="og:description" content="© 2025–2026 Jessie Math 捷析老師. All rights reserved.">
+    <meta property="og:type" content="website">
+    
+    <meta property="og:image" content="g6-u5-1.png">
+    <meta property="og:image:width" content="1024">
+    <meta property="og:image:height" content="1536">
+    <meta property="og:image:alt" content="Jessie Math 遊戲封面">
+    
+    <link rel="image_src" href="g6-u5-1.png">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Jessie Math - 小數的除法PRO">
+    <meta name="twitter:description" content="© 2025–2026 Jessie Math 捷析老師. All rights reserved.">
+    <meta name="twitter:image" content="g6-u5-1.png">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #fca311;
+            --secondary-color: #14213d;
+            --bg-color: #e5e5e5;
+            --white: #ffffff;
+            --danger: #d90429;
+            --success: #2a9d8f;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Microsoft JhengHei', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--secondary-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- Header / Hero 區 --- */
+        header {
+            background-color: var(--white);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-wrapper {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 3px solid var(--primary-color);
+            background-color: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .logo-wrapper img {
+            width: 80%;
+            height: auto;
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 24px;
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--white);
+            background-color: var(--secondary-color);
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .nav-links a:hover {
+            background-color: var(--primary-color);
+        }
+
+        /* --- 容器與通用設定 --- */
+        main {
+            flex: 1; /* 讓 main 撐開空間，確保 footer 在底部 */
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            background: var(--white);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .hidden { display: none !important; }
+        
+        button {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+        button:hover { opacity: 0.8; }
+        button:disabled { background-color: #ccc; cursor: not-allowed; }
+        
+        input[type="text"], input[type="number"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 300px;
+        }
+        input:disabled { background-color: #f8f9fa; }
+
+        /* --- 規則與區塊 --- */
+        .rules-box {
+            background-color: #fff3cd;
+            border-left: 5px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            line-height: 1.6;
+        }
+
+        /* --- 關卡主選單 --- */
+        .difficulty-selector {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .level-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .level-btn {
+            background-color: var(--secondary-color);
+            font-size: 18px;
+            padding: 15px;
+        }
+
+        /* --- 遊戲介面 --- */
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            background: var(--secondary-color);
+            color: var(--white);
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            flex-wrap: wrap;
+        }
+        .question-box {
+            font-size: 28px;
+            text-align: center;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        
+        /* 回饋訊息區塊 */
+        #feedbackMessage {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            min-height: 30px;
+            margin-bottom: 15px;
+            transition: 0.3s;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .controls button { background-color: #6c757d; }
+        .controls button.action { background-color: var(--primary-color); }
+
+        /* --- 白板 --- */
+        #whiteboard-container {
+            margin-top: 20px;
+            border: 2px dashed #aaa;
+            position: relative;
+        }
+        #whiteboard {
+            width: 100%;
+            height: 300px;
+            background-color: #f8f9fa;
+            cursor: crosshair;
+        }
+        .clear-board-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 12px;
+            padding: 5px 10px;
+        }
+
+        /* --- 表格與排行榜 --- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        th { background-color: var(--secondary-color); color: var(--white); }
+        .correct { color: var(--success); font-weight: bold; }
+        .wrong { color: var(--danger); font-weight: bold; }
+
+        .leaderboard-section {
+            margin-top: 40px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .leaderboard-section h3 {
+            margin-top: 0;
+            text-align: center;
+            color: var(--primary-color);
+        }
+
+        /* --- Footer 設計 --- */
+        footer {
+            margin-top: 20px;
+            padding-bottom: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .footer-pill {
+            background-color: var(--white);
+            padding: 12px 25px;
+            border-radius: 50px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            font-size: 14px;
+        }
+        .footer-left, .footer-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .footer-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+        }
+        .footer-icon {
+            color: var(--primary-color);
+            font-size: 16px;
+        }
+        .footer-copy, .footer-tagline {
+            color: var(--secondary-color);
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">
+            <div class="logo-wrapper">
+                <img src="JESSIEMATH-Q.png" alt="Logo" onerror="this.style.display='none'">
+            </div>
+            <h1>Jessie Math</h1>
+        </div>
+        <div class="nav-links">
+            <a href="https://jessiemath0703-chu.github.io/website2/">🏠 首頁</a>
+            <a href="https://jessiemath0703-chu.github.io/Game-Lobby/">🎮 遊戲大廳</a>
+            <a href="https://jessiemath0703-chu.github.io/Game-Lobby/#g6-u5">🔙 六年級小數的除法</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div id="view-start">
+                <h2>歡迎挑戰：六年級小數的除法！</h2>
+                <div style="text-align: center; margin: 20px 0;">
+                    <input type="text" id="playerName" placeholder="請輸入你的名字 (必填)" required>
+                </div>
+                
+                <div class="rules-box">
+                    <h3>📜 遊戲規則</h3>
+                    <ul>
+                        <li><strong>計分方式：</strong> 答對一題得基礎分10分。</li>
+                        <li><strong>連擊 (Combo)：</strong> 連續答對可獲得加倍分數 (Combo x 10分)！</li>
+                        <li><strong>時間獎勵/懲罰：</strong> 答對一題 <strong>+5秒</strong>，答錯一題 <strong>-5秒</strong>，並中斷 Combo。</li>
+                        <li><strong>即時回饋：</strong> 送出答案後會短暫顯示正確答案再進入下一題。</li>
+                    </ul>
+                </div>
+                <div style="text-align: center;">
+                    <button onclick="goToLevelSelection()">準備好了，開始！</button>
+                </div>
+            </div>
+
+            <div id="view-levels" class="hidden">
+                <h2 style="text-align: center;">選擇難度與關卡</h2>
+                
+                <div class="difficulty-selector">
+                    <label><input type="radio" name="difficulty" value="90" checked> 🟢 基礎 (90秒)</label>
+                    <label><input type="radio" name="difficulty" value="60"> 🟡 進階 (60秒)</label>
+                    <label><input type="radio" name="difficulty" value="45"> 🔴 魔王 (45秒)</label>
+                </div>
+
+                <div class="level-buttons">
+                    <button class="level-btn" onclick="startLevel(1, '整數÷小數(除一位小數)')">第一關：整數÷小數 (除一位小數)</button>
+                    <button class="level-btn" onclick="startLevel(2, '小數÷小數(除一位數/二位數)')">第二關：小數÷小數 (除一位數 / 二位數)</button>
+                    <button class="level-btn" onclick="startLevel(3, '小數除法應用題')">第三關：小數除法應用題 (除法與概數 / 關係)</button>
+                </div>
+
+                <div class="leaderboard-section">
+                    <h3>🏆 英雄榜 (Top 10)</h3>
+                    <table>
+                        <thead>
+                            <tr><th>名次</th><th>玩家</th><th>挑戰關卡</th><th>挑戰時間</th><th>分數</th></tr>
+                        </thead>
+                        <tbody class="lb-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="view-game" class="hidden">
+                <div class="game-header">
+                    <div>⏳ 剩餘時間: <span id="timeDisplay">90</span>秒</div>
+                    <div>🔥 Combo: <span id="comboDisplay">0</span></div>
+                    <div>⭐ 分數: <span id="scoreDisplay">0</span></div>
+                </div>
+
+                <div class="question-box" id="questionText">題目載入中...</div>
+                
+                <div id="feedbackMessage"></div>
+                
+                <div style="text-align: center;">
+                    <input type="number" step="0.001" id="answerInput" placeholder="請輸入答案" onkeypress="handleEnter(event)">
+                    <button class="action" id="submitBtn" onclick="submitAnswer()">送出答案</button>
+                </div>
+
+                <div class="controls">
+                    <button onclick="togglePause()" id="pauseBtn">⏸️ 暫停</button>
+                    <button onclick="restartLevel()">🔄 重新</button>
+                    <button onclick="returnToLevels()">🔙 回主選單</button>
+                    <button onclick="toggleWhiteboard()" class="action">🖍️ 計算白板</button>
+                </div>
+
+                <div id="whiteboard-container" class="hidden">
+                    <button class="clear-board-btn" onclick="clearWhiteboard()">清除白板</button>
+                    <canvas id="whiteboard"></canvas>
+                </div>
+            </div>
+
+            <div id="view-result" class="hidden">
+                <h2 style="text-align: center;">🎉 遊戲結束！</h2>
+                <h3 style="text-align: center;">最終分數：<span id="finalScore" style="color:var(--primary-color); font-size:30px;"></span></h3>
+                
+                <h3>🔍 復盤記錄 (你的作答狀況)</h3>
+                <div style="max-height: 300px; overflow-y: auto;">
+                    <table id="reviewTable">
+                        <thead>
+                            <tr><th>題目</th><th>你的答案</th><th>正確答案</th><th>結果</th></tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div class="leaderboard-section">
+                    <h3>🏆 英雄榜 (Top 10)</h3>
+                    <table>
+                        <thead>
+                            <tr><th>名次</th><th>玩家</th><th>挑戰關卡</th><th>挑戰時間</th><th>分數</th></tr>
+                        </thead>
+                        <tbody class="lb-tbody"></tbody>
+                    </table>
+                </div>
+
+                <div style="text-align: center; margin-top: 20px;">
+                    <button onclick="returnToLevels()">🔙 再玩一次</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-pill">
+            <div class="footer-left">
+                <div class="footer-dot" aria-hidden="true"></div>
+                <div class="footer-copy">© 2025–2026 Jessie Math 捷析老師. All rights reserved.</div>
+            </div>
+            <div class="footer-right">
+                <div class="footer-icon" aria-hidden="true"><i class="fas fa-compass"></i></div>
+                <div class="footer-tagline">數學不迷路，Jessie帶你走向理解。</div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- 全域變數 ---
+        let playerName = "";
+        let currentLevelName = "";
+        let baseTime = 90;
+        let timeLeft = 0;
+        let score = 0;
+        let combo = 0;
+        let timerInterval;
+        let isPaused = false;
+        let isWaitingForNext = false;
+        
+        let questionsPool = [];
+        let currentDrawPool = [];
+        let currentQuestion = null;
+        let reviewHistory = [];
+
+        // --- 擴充題庫設定 ---
+        const level1Data = [
+            { q: "12 ÷ 0.6", a: 20 }, { q: "25 ÷ 0.5", a: 50 }, { q: "8 ÷ 0.4", a: 20 },
+            { q: "36 ÷ 0.9", a: 40 }, { q: "144 ÷ 1.2", a: 120 }, { q: "45 ÷ 1.5", a: 30 },
+            { q: "15 ÷ 0.5", a: 30 }, { q: "24 ÷ 0.8", a: 30 }, { q: "49 ÷ 0.7", a: 70 },
+            { q: "81 ÷ 0.9", a: 90 }, { q: "64 ÷ 0.4", a: 160 }, { q: "3 ÷ 0.2", a: 15 },
+            { q: "7 ÷ 0.5", a: 14 }, { q: "18 ÷ 0.3", a: 60 }, { q: "56 ÷ 0.8", a: 70 },
+            { q: "11 ÷ 0.5", a: 22 }, { q: "9 ÷ 0.6", a: 15 }, { q: "21 ÷ 1.5", a: 14 },
+            { q: "39 ÷ 1.3", a: 30 }, { q: "64 ÷ 1.6", a: 40 },
+            { q: "12 ÷ 0.4", a: 30 }, { q: "18 ÷ 0.9", a: 20 }, { q: "27 ÷ 0.3", a: 90 }, 
+            { q: "42 ÷ 0.7", a: 60 }, { q: "54 ÷ 0.6", a: 90 }, { q: "35 ÷ 0.5", a: 70 }, 
+            { q: "48 ÷ 0.8", a: 60 }, { q: "72 ÷ 0.9", a: 80 }, { q: "105 ÷ 1.5", a: 70 }, 
+            { q: "96 ÷ 1.2", a: 80 }, { q: "26 ÷ 1.3", a: 20 }, { q: "51 ÷ 1.7", a: 30 }, 
+            { q: "38 ÷ 1.9", a: 20 }, { q: "75 ÷ 1.5", a: 50 }, { q: "112 ÷ 1.4", a: 80 }
+        ];
+        
+        const level2Data = [
+            { q: "1.44 ÷ 1.2", a: 1.2 }, { q: "0.25 ÷ 0.05", a: 5 }, { q: "3.6 ÷ 0.6", a: 6 },
+            { q: "0.125 ÷ 0.25", a: 0.5 }, { q: "5.4 ÷ 0.09", a: 60 }, { q: "0.81 ÷ 0.09", a: 9 },
+            { q: "2.5 ÷ 0.5", a: 5 }, { q: "0.36 ÷ 0.6", a: 0.6 }, { q: "0.08 ÷ 0.2", a: 0.4 },
+            { q: "1.25 ÷ 0.25", a: 5 }, { q: "0.64 ÷ 0.08", a: 8 }, { q: "7.2 ÷ 0.9", a: 8 },
+            { q: "0.48 ÷ 0.12", a: 4 }, { q: "2.25 ÷ 1.5", a: 1.5 }, { q: "0.9 ÷ 0.03", a: 30 },
+            { q: "5.6 ÷ 0.07", a: 80 }, { q: "0.027 ÷ 0.09", a: 0.3 }, { q: "0.81 ÷ 0.27", a: 3 },
+            { q: "1.69 ÷ 1.3", a: 1.3 }, { q: "3.5 ÷ 0.05", a: 70 }, { q: "0.42 ÷ 0.06", a: 7 },
+            { q: "0.15 ÷ 0.3", a: 0.5 }, { q: "0.45 ÷ 0.09", a: 5 }, { q: "2.56 ÷ 1.6", a: 1.6 }, 
+            { q: "6.25 ÷ 2.5", a: 2.5 }, { q: "0.72 ÷ 0.08", a: 9 }, { q: "0.064 ÷ 0.08", a: 0.8 }, 
+            { q: "1.21 ÷ 1.1", a: 1.1 }, { q: "2.89 ÷ 1.7", a: 1.7 }, { q: "4.8 ÷ 0.12", a: 40 }, 
+            { q: "0.32 ÷ 0.04", a: 8 }, { q: "0.55 ÷ 0.11", a: 5 }, { q: "0.96 ÷ 0.12", a: 8 }
+        ];
+
+        const level3Data = [
+            { q: "一條繩子長3.6公尺，每0.4公尺剪一段，可剪幾段？", a: 9 },
+            { q: "若被除數和除數同時擴大10倍，商會改變嗎？(輸入1代表不變，0代表改變)", a: 1 },
+            { q: "5.25公升的果汁，每0.75公升裝一瓶，可裝幾瓶？", a: 7 },
+            { q: "當除數小於1時，商會比被除數大還是小？(大請輸入1，小請輸入0)", a: 1 },
+            { q: "甲數是乙數的0.8倍，已知甲數是16，乙數是多少？", a: 20 },
+            { q: "把 7.5 公斤的米，每 0.25 公斤裝成一袋，共可裝幾袋？", a: 30 },
+            { q: "當除數大於1時，商會比被除數大還是小？(大請輸入1，小請輸入0)", a: 0 },
+            { q: "一桶油 10.5 公升，每天用掉 1.5 公升，可用幾天？", a: 7 },
+            { q: "已知 A ÷ 0.8 = B，且 A 和 B 都大於 0，請問 A 比較大還是 B 比較大？(A請輸入1，B請輸入0)", a: 0 },
+            { q: "哥哥的體重是 45 公斤，是妹妹的 1.25 倍，妹妹的體重是幾公斤？", a: 36 },
+            { q: "一瓶容量 2.4 公升的牛奶，每 0.15 公升倒一杯，可以倒幾杯？", a: 16 },
+            { q: "姐姐有 6.4 百元，想買每本 0.8 百元的筆記本，最多可以買幾本？", a: 8 },
+            { q: "花圃面積 12.6 平方公尺，長 4.2 公尺，寬是多少公尺？", a: 3 },
+            { q: "腳踏車騎 18.5 公里花了 2.5 小時，平均每小時騎幾公里？", a: 7.4 },
+            { q: "已知 4.5 ÷ 甲數 = 0.9，甲數是多少？", a: 5 },
+            { q: "0.99 ÷ 0.11 的商是多少？", a: 9 },
+            { q: "一條緞帶長 15.6 公尺，每 1.2 公尺剪成一段，可以剪成幾段？", a: 13 },
+            { q: "若除數是 0.5，被除數是 2.5，商是多少？", a: 5 },
+            { q: "甲數 ÷ 0.1 = 甲數 × 多少？", a: 10 },
+            { q: "乙數 ÷ 0.01 = 乙數 × 多少？", a: 100 }
+        ];
+
+        // --- 視圖切換與初始化 ---
+        window.onload = function() {
+            renderAllLeaderboards(); 
+        };
+
+        function switchView(viewId) {
+            document.querySelectorAll('main .container > div').forEach(el => el.classList.add('hidden'));
+            document.getElementById(viewId).classList.remove('hidden');
+        }
+
+        // --- 遊戲流程邏輯 ---
+        function goToLevelSelection() {
+            playerName = document.getElementById("playerName").value.trim();
+            if (!playerName) {
+                alert("請先輸入你的名字喔！");
+                return;
+            }
+            switchView("view-levels");
+        }
+
+        function startLevel(levelId, levelName) {
+            currentLevelName = levelName;
+            let diffRadios = document.getElementsByName('difficulty');
+            for(let radio of diffRadios) {
+                if(radio.checked) {
+                    baseTime = parseInt(radio.value);
+                    break;
+                }
+            }
+
+            if(levelId === 1) questionsPool = [...level1Data];
+            else if(levelId === 2) questionsPool = [...level2Data];
+            else if(levelId === 3) questionsPool = [...level3Data];
+
+            resetGameState();
+            switchView("view-game");
+            startGameLoop();
+        }
+
+        function resetGameState() {
+            timeLeft = baseTime;
+            score = 0;
+            combo = 0;
+            isPaused = false;
+            isWaitingForNext = false;
+            reviewHistory = [];
+            currentDrawPool = [];
+            document.getElementById("feedbackMessage").innerHTML = "";
+            
+            let ansInput = document.getElementById("answerInput");
+            ansInput.value = "";
+            ansInput.disabled = false;
+            document.getElementById("submitBtn").disabled = false;
+            
+            updateUI();
+            document.getElementById("pauseBtn").innerText = "⏸️ 暫停";
+            clearWhiteboard();
+        }
+
+        function getNextQuestion() {
+            if (currentDrawPool.length === 0) {
+                currentDrawPool = [...questionsPool].sort(() => Math.random() - 0.5);
+            }
+            currentQuestion = currentDrawPool.pop();
+            document.getElementById("questionText").innerText = currentQuestion.q + " = ?";
+        }
+
+        function startGameLoop() {
+            getNextQuestion();
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                if (!isPaused && !isWaitingForNext) {
+                    timeLeft--;
+                    updateUI();
+                    if (timeLeft <= 0) {
+                        endGame();
+                    }
+                }
+            }, 1000);
+        }
+
+        function handleEnter(e) {
+            if (e.key === 'Enter') submitAnswer();
+        }
+
+        function submitAnswer() {
+            if (isPaused || timeLeft <= 0 || isWaitingForNext) return;
+            let inputVal = document.getElementById("answerInput").value;
+            if (inputVal === "") return;
+            
+            let userAns = parseFloat(inputVal);
+            let isCorrect = (userAns === currentQuestion.a);
+
+            // 記錄作答
+            reviewHistory.push({
+                q: currentQuestion.q,
+                uAns: userAns,
+                cAns: currentQuestion.a,
+                correct: isCorrect
+            });
+
+            // 進入等待下一題的狀態
+            isWaitingForNext = true;
+            let ansInput = document.getElementById("answerInput");
+            let submitBtn = document.getElementById("submitBtn");
+            let feedbackEl = document.getElementById("feedbackMessage");
+            
+            ansInput.disabled = true;
+            submitBtn.disabled = true;
+
+            if (isCorrect) {
+                combo++;
+                let points = 10 * combo;
+                score += points;
+                timeLeft += 5;
+                feedbackEl.innerHTML = `<span style="color:var(--success);">✔️ 答對了！ Combo x${combo} (+5秒)</span>`;
+            } else {
+                combo = 0;
+                timeLeft -= 5;
+                if (timeLeft < 0) timeLeft = 0;
+                feedbackEl.innerHTML = `<span style="color:var(--danger);">❌ 答錯了！正確答案是：${currentQuestion.a} (-5秒)</span>`;
+            }
+
+            updateUI();
+
+            setTimeout(() => {
+                feedbackEl.innerHTML = "";
+                ansInput.value = "";
+                ansInput.disabled = false;
+                submitBtn.disabled = false;
+                isWaitingForNext = false;
+
+                if (timeLeft > 0) {
+                    getNextQuestion();
+                    ansInput.focus();
+                } else {
+                    endGame();
+                }
+            }, 1500);
+        }
+
+        function updateUI() {
+            document.getElementById("timeDisplay").innerText = timeLeft;
+            document.getElementById("comboDisplay").innerText = combo;
+            document.getElementById("scoreDisplay").innerText = score;
+        }
+
+        function togglePause() {
+            if (isWaitingForNext) return;
+            isPaused = !isPaused;
+            document.getElementById("pauseBtn").innerText = isPaused ? "▶️ 繼續" : "⏸️ 暫停";
+            
+            let ansInput = document.getElementById("answerInput");
+            let submitBtn = document.getElementById("submitBtn");
+            ansInput.disabled = isPaused;
+            submitBtn.disabled = isPaused;
+            if(!isPaused) ansInput.focus();
+        }
+
+        function restartLevel() {
+            clearInterval(timerInterval);
+            resetGameState();
+            startGameLoop();
+        }
+
+        function returnToLevels() {
+            clearInterval(timerInterval);
+            renderAllLeaderboards(); 
+            switchView("view-levels");
+        }
+
+        // --- 結算與排行榜系統 ---
+        function endGame() {
+            clearInterval(timerInterval);
+            timeLeft = 0;
+            updateUI();
+            document.getElementById("finalScore").innerText = score;
+            
+            generateReviewTable();
+            saveScore();
+            renderAllLeaderboards(); 
+            switchView("view-result");
+        }
+
+        function generateReviewTable() {
+            let tbody = document.querySelector("#reviewTable tbody");
+            tbody.innerHTML = "";
+            reviewHistory.forEach(item => {
+                let tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${item.q}</td>
+                    <td>${item.uAns}</td>
+                    <td>${item.cAns}</td>
+                    <td class="${item.correct ? 'correct' : 'wrong'}">${item.correct ? '✔️ 答對' : '❌ 答錯'}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function saveScore() {
+            let leaderboard = JSON.parse(localStorage.getItem("jessieMathLB")) || [];
+            leaderboard.push({
+                name: playerName,
+                level: currentLevelName,
+                mode: baseTime + "秒",
+                score: score
+            });
+            leaderboard.sort((a, b) => b.score - a.score);
+            leaderboard = leaderboard.slice(0, 10);
+            localStorage.setItem("jessieMathLB", JSON.stringify(leaderboard));
+        }
+
+        function renderAllLeaderboards() {
+            let leaderboard = JSON.parse(localStorage.getItem("jessieMathLB")) || [];
+            const tbodies = document.querySelectorAll(".lb-tbody");
+            
+            let htmlContent = "";
+            if (leaderboard.length === 0) {
+                htmlContent = "<tr><td colspan='5'>目前還沒有英雄上榜，快來挑戰！</td></tr>";
+            } else {
+                leaderboard.forEach((entry, index) => {
+                    let rankIcon = "";
+                    if(index === 0) rankIcon = "🥇 第一名";
+                    else if(index === 1) rankIcon = "🥈 第二名";
+                    else if(index === 2) rankIcon = "🥉 第三名";
+                    else rankIcon = `🏅 第${index + 1}名`;
+
+                    htmlContent += `
+                        <tr>
+                            <td>${rankIcon}</td>
+                            <td>${entry.name}</td>
+                            <td>${entry.level}</td>
+                            <td>${entry.mode}</td>
+                            <td style="font-weight:bold; color:var(--primary-color);">${entry.score}</td>
+                        </tr>
+                    `;
+                });
+            }
+
+            tbodies.forEach(tbody => {
+                tbody.innerHTML = htmlContent;
+            });
+        }
+
+        // --- 計算白板 (Canvas) 邏輯 ---
+        const canvas = document.getElementById('whiteboard');
+        const ctx = canvas.getContext('2d');
+        let drawing = false;
+
+        function resizeCanvas() {
+            const container = document.getElementById('whiteboard-container');
+            if(!container.classList.contains('hidden')) {
+                canvas.width = container.clientWidth;
+                canvas.height = 300;
+            }
+        }
+
+        function toggleWhiteboard() {
+            const container = document.getElementById("whiteboard-container");
+            container.classList.toggle("hidden");
+            if (!container.classList.contains("hidden")) {
+                resizeCanvas();
+            }
+        }
+
+        function clearWhiteboard() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function startDrawing(e) { drawing = true; draw(e); }
+        function stopDrawing() { drawing = false; ctx.beginPath(); }
+        
+        function draw(e) {
+            if (!drawing) return;
+            e.preventDefault();
+            
+            let rect = canvas.getBoundingClientRect();
+            let x = (e.clientX || e.touches[0].clientX) - rect.left;
+            let y = (e.clientY || e.touches[0].clientY) - rect.top;
+
+            ctx.lineWidth = 3;
+            ctx.lineCap = "round";
+            ctx.strokeStyle = "#14213d";
+
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('touchstart', startDrawing);
+        canvas.addEventListener('touchend', stopDrawing);
+        canvas.addEventListener('touchmove', draw);
+        window.addEventListener('resize', resizeCanvas);
+
+    </script>
+</body>
+</html>
